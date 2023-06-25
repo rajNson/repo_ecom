@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+        {% if category %}
+            {{ category.description|truncatewords:155 }}
+        {% else %}
+            welcome to GENTLE_MAN store..! where you can buy different items...
+        {% endif %}
+{% endblock %}
+{% block title %}
+    {% if category %}
+        {{ category.name }} -GENTLE MAN Store
+    {% else %}
+        See our New Collections-GENTLE_MAN Store
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if category %}
+
+    <div>
+        <div class="row my_row_class">
+            <div class="mx-auto">
+            <p><a href="{% url 'shop:allProdCat' %}">Our Product Collections</a></p>
+        </div>
+            </div>
+    </div>
+    {% endif %}
+<div class="mx_auto">
+    {% if category %}
+        <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}">
+</div>
+   <br>
+<div>
+    <h1 class="text-center my_title">{{category.name}}</h1>
+    <p class="text-justify">{{category.description}}</p>
+</div>
+    {% else %}
+<div>
+    <img class="my_image my_image_padding" src="{% static 'img/bann.png' %}" alt="our products" width="928px;" height="350px;">
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title">Our Product Collections</h1>
+    <p class="text-justify">In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available. It is also used to temporarily replace text in a process called greeking, which allows designers to consider the form of a webpage </p>
+</div>
+    {% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products.object_list %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4 xol-lg-4">
+            <div class="card text-center" style="...">
+                <a href="{{product.get_url}}"><img class="card-image-top my_image" src="{{product.image.url}}" alt="{{product.name}}"></a>
+            <div class="card-body">
+                 <h4>{{product.name}}</h4>
+                 <p>{{product.price}}</p>
+            </div>
+            </div>
+        </div>
+        {% endfor %}
+     </div>
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+
+       <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+                <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+            {% endfor %}
+        </div>
+         {% endif %}
+    </div>
+    <br>
+</div>
+
+{% endblock %}
